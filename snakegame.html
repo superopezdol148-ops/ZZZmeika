@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Змейка</title>
+        <link rel="stylesheet" href="./snakegame.css">
+    </head>
+    <body>
+        <div class="header">
+            <h1>ЗМЕЙКА</h1>
+        </div>
+        
+        <div class="container">
+            <div class="game-container">
+                <div class="game-header">
+                    <div class="score-container">
+                        <div class="score-title">ОЧКИ</div>
+                        <div class="score">0</div>
+                    </div>
+                </div>
+                
+                <canvas id="gameCanvas" class="game-board"></canvas>
+            </div>
+            
+            <div class="controls">
+                <div class="mode-selector">
+                    <h2>РЕЖИМЫ</h2>
+                    <div class="mode-buttons">
+                        <button id="modeSmall" class="mode-btn">Маленькое поле (10x10, 1 яблоко)</button>
+                        <button id="modeMedium" class="mode-btn active">Среднее поле (20x20, 3 яблока)</button>
+                        <button id="modeLarge" class="mode-btn">Большое поле (30x30, 5 яблок)</button>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button id="startBtn" class="start-btn">НАЧАТЬ ИГРУ</button>
+                    <button id="pauseBtn" class="pause-btn">ПАУЗА</button>
+                    <button id="restartBtn" class="restart-btn">НОВАЯ ИГРА</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="gameOver" class="game-over">
+            <h2>ИГРА ОКОНЧЕНА</h2>
+            <p id="finalScore">Ваш счет: 0</p>
+            <button id="restartAfterGameOver" class="restart-btn">ИГРАТЬ СНОВА</button>
+        </div>
+    </body>
+</html>
