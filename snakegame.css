@@ -1,0 +1,188 @@
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}   
+body {
+    display: flex;                                                                                  
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    padding: 20px;
+}
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+h1 {
+    font-size: 44px;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    animation: neon-3 5s steps(1, start) infinite reverse;
+}
+@keyframes neon-3 {
+    0%{
+        color: #0b3960;
+        text-shadow: 0 0 7px #0b3960, 0 0 8px #0b3960;
+    }
+    80%{
+        color: #fff;
+        text-shadow: 0 0 6px #fff,0 0 10px #fff,0 0 50px #79a7fc;
+    }
+    81%{
+        color: #E1F5FE;
+        text-shadow: 0 0 6px #fff,0 0 10px #fff,0 0 50px #79a7fc;
+    }
+    82%{color: #0b3960;
+        text-shadow: 0 0 7px #0b3960, 0 0 8px #0b3960;
+    }
+    83%{
+        color: #E1F5FE;
+        text-shadow: 0 0 6px #fff,0 0 10px #fff,0 0 50px #79a7fc;
+    }
+    84%{
+        color: #0b3960;
+        text-shadow: 0 0 7px #0b3960, 0 0 8px #0b3960;
+    }
+    85%{
+        color: #E1F5FE;
+        text-shadow: 0 0 6px #fff,0 0 10px #fff,0 0 50px #79a7fc;
+    }
+    100%{
+        color: #0b3960;
+        text-shadow: 0 0 7px #0b3960,0 0 8px #0b3960;
+    }
+}
+.container {
+    display: flex;
+    gap: 30px;
+    width: 1200px;
+    justify-content: center;
+}
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.game-header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 15px;
+}
+.score-container {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 140px;
+}
+.score-title {
+    font-size: 14px;
+    color: #a0a0c0;
+}
+.score {
+    font-size: 28px;
+    font-weight: bold;
+    color: #00b4db;
+}
+.game-board {
+    border: 3px solid #00b4db;
+    border-radius: 5px;
+    box-shadow: 0 0 25px rgba(0, 180, 219, 0.3);
+    background-color: #0f3460;
+}
+.controls {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.mode-selector {
+    margin-bottom: 25px;
+}
+h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #00b4db;
+    border-bottom: 2px solid rgba(0, 180, 219, 0.3);
+    padding-bottom: 5px;
+}
+.mode-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.mode-btn {
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: white;
+}
+.mode-btn:hover {
+    background: linear-gradient(to right, #2980b9, #1f618d);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+.mode-btn.active {
+    background: linear-gradient(to right, #2ecc71, #27ae60);
+    box-shadow: 0 0 15px #2ecc71;
+}
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+button {
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.start-btn {
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    color: white;
+}
+.start-btn:hover {
+    background: linear-gradient(to right, #f1c40f, #f39c12);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+}
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    z-index: 10;
+    display: none;
+    box-shadow: 0 0 30px rgba(219, 0, 0, 0.5);
+    border: 3px solid #ff3333;
+}
+.game-over h2 {
+    color: #ff3333;
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+.game-over p {
+    margin-bottom: 20px;
+    font-size: 19px;
+}
