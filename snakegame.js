@@ -6,7 +6,7 @@ canvas.height = 200;
 
 let maxPoints;
 let widthmode;
-let heightmode;
+let heightmode; 
 
 let direction = 'right';    
 

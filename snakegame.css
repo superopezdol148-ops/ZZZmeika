@@ -25,7 +25,7 @@ h1 {
     animation: neon-3 5s steps(1, start) infinite reverse;
 }
 @keyframes neon-3 {
-    0%{
+    0%{ 
         color: #0b3960;  
         text-shadow: 0 0 7px #0b3960, 0 0 8px #0b3960;
     }
