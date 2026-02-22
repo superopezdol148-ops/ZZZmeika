@@ -19,7 +19,7 @@ body {
     margin-bottom: 20px;
 }
 h1 {
-    font-size: 44.8px;
+    font-size: 44px;
     margin-bottom: 5px;
     background: linear-gradient(to right, #00b4db, #0083b0);
     -webkit-background-clip: text;
@@ -53,11 +53,11 @@ h1 {
     min-width: 140px;
 }
 .score-title {
-    font-size: 14.4px;
+    font-size: 14px;
     color: #a0a0c0;
 }
 .score {
-    font-size: 28.8px;
+    font-size: 28px;
     font-weight: bold;
     color: #00b4db;
 }
@@ -95,7 +95,7 @@ h2 {
     padding: 15px;
     border: none;
     border-radius: 8px;
-    font-size: 17.6px;
+    font-size: 17px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -121,7 +121,7 @@ button {
     padding: 15px;
     border: none;
     border-radius: 8px;
-    font-size: 17.6px;
+    font-size: 17px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -174,5 +174,5 @@ button {
 }
 .game-over p {
     margin-bottom: 20px;
-    font-size: 19.2px;
+    font-size: 19px;
 }
