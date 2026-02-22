@@ -26,7 +26,7 @@ h1 {
 }
 @keyframes neon-3 {
     0%{
-        color: #0b3960;
+        color: #0b3960; 
         text-shadow: 0 0 7px #0b3960, 0 0 8px #0b3960;
     }
     80%{
