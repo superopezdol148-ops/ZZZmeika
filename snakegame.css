@@ -9,11 +9,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-<<<<<<< HEAD
-    min-height: 100vh;
-=======
     height: 100vh;
->>>>>>> cd00102d094ae87229c95d6f257e6ed176bf59c9
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: #fff;
     padding: 20px;
@@ -25,13 +21,6 @@ body {
 h1 {
     font-size: 44px;
     margin-bottom: 5px;
-<<<<<<< HEAD
-    background: linear-gradient(to right, #00b4db, #0083b0);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-=======
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     animation: neon-3 5s steps(1, start) infinite reverse;
 }
@@ -67,17 +56,11 @@ h1 {
         color: #0b3960;
         text-shadow: 0 0 7px #0b3960,0 0 8px #0b3960;
     }
->>>>>>> cd00102d094ae87229c95d6f257e6ed176bf59c9
 }
 .container {
     display: flex;
     gap: 30px;
-<<<<<<< HEAD
-    max-width: 1200px;
-    width: 100%;
-=======
     width: 1200px;
->>>>>>> cd00102d094ae87229c95d6f257e6ed176bf59c9
     justify-content: center;
 }
 .game-container {
@@ -96,11 +79,7 @@ h1 {
     padding: 10px 20px;
     border-radius: 10px;
     text-align: center;
-<<<<<<< HEAD
-    min-width: 140px;
-=======
     width: 140px;
->>>>>>> cd00102d094ae87229c95d6f257e6ed176bf59c9
 }
 .score-title {
     font-size: 14px;
@@ -128,6 +107,7 @@ h1 {
 }
 .mode-selector {
     margin-bottom: 25px;
+    text-align: center;
 }
 h2 {
     font-size: 24px;
@@ -177,50 +157,18 @@ button {
     transition: all 0.3s ease;
 }
 .start-btn {
-<<<<<<< HEAD
-    background: linear-gradient(to right, #00b4db, #0083b0);
-    color: white;
-}
-.start-btn:hover {
-    background: linear-gradient(to right, #00c8ff, #0099cc);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 180, 219, 0.4);
-}
-.pause-btn {
-    background: linear-gradient(to right, #f39c12, #e67e22);
-    color: white;
-}
-.pause-btn:hover {
-=======
     background: linear-gradient(to right, #f39c12, #e67e22);
     color: white;
 }
 .start-btn:hover {
->>>>>>> cd00102d094ae87229c95d6f257e6ed176bf59c9
     background: linear-gradient(to right, #f1c40f, #f39c12);
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
 }
-<<<<<<< HEAD
-.restart-btn {
-    background: linear-gradient(to right, #2ecc71, #27ae60);
-    color: white;
-}
-.restart-btn:hover {
-    background: linear-gradient(to right, #27ae60, #219653);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
-}
-=======
->>>>>>> cd00102d094ae87229c95d6f257e6ed176bf59c9
 .game-over {
     position: absolute;
     top: 50%;
     left: 50%;
-<<<<<<< HEAD
-    transform: translate(-50%, -50%);
-=======
->>>>>>> cd00102d094ae87229c95d6f257e6ed176bf59c9
     background-color: rgba(0, 0, 0, 0.85);
     padding: 30px;
     border-radius: 15px;

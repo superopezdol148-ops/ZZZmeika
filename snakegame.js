@@ -1,5 +1,6 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const score_title = document.querySelector(".score");
 
 canvas.width = 200;
 canvas.height = 200;
@@ -7,19 +8,24 @@ canvas.height = 200;
 let maxPoints = 4000;
 let widthmode = 200;
 let heightmode = widthmode; 
-let apples = [{x:5,y:5},{x:4,y:4}];
+let apples = [];
 let cell = 10;
 let max = canvas.width/10;
 let gamestart = false;
+let score = 0;
 
 let direction = 'right';    
 
 let snake = [{x: 1, y: 1}];
 
 $("[data-mode]").click(function(){
-  apples = [];
   if(gamestart == true)
-    gamestart = false;
+    return;
+
+  apples = [];
+  snake = [{x: 1, y: 1}];
+  direction = 'right';
+
   let mode = $(this).data("mode");
   let points = document.getElementById(mode);
   maxPoints = points.classList[1];
@@ -27,10 +33,7 @@ $("[data-mode]").click(function(){
   canvas.width = widthmode;
   canvas.height = heightmode;
   max = canvas.width/10;
-  $(`#modeSmall`).apples.unshift(`{x: ${points.classList[3]}, y: ${points.classList[3]}}`);
-  $(`#modeMedium`).apples.unshift(`{x: ${points.classList[3]}, y: ${points.classList[3]}},{x: ${points.classList[3]-1}, y: ${points.classList[3]-1}}`);
-  $(`#modeLarge`).apples.unshift(`{x: ${points.classList[3]}, y: ${points.classList[3]}},{x: ${points.classList[3]-1}, y: ${points.classList[3]-1}},{x: ${points.classList[3]+1}, y: ${points.classList[3]+1}}`);
-  console.log(apples);
+
   $(`#modeSmall`).removeClass("active");
   
   $(`#modeMedium`).removeClass("active");
@@ -38,6 +41,10 @@ $("[data-mode]").click(function(){
   $(`#modeLarge`).removeClass("active");
 
   $(`#${mode}`).addClass("active");
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  NewApple();
+  drawSnake();
 });
 
 document.addEventListener("keydown", (e) => {
@@ -59,14 +66,22 @@ function rand(min, max){
 console.log(rand(0, 10));
 
 function NewApple(){
+  if(apples.length<widthmode/100){
+  let newX = rand(-1,max);
+  let newY = rand(-1,max);
+  apples.push({x: newX, y: newY});
+  console.log(apples.length);
+  }
+  if(apples.length<widthmode/100)
+    NewApple();
   ctx.fillStyle = "red";
-  ctx.fillRect(rand(-1,max-1)*10,rand(-1,max-1)*10,10,10);
+  apples.forEach((apple) => ctx.fillRect(apple.x*10,apple.y*10,10,10));
 }
+
 function drawSnake(){
   ctx.fillStyle = "green";
-  ctx.fillRect(snake[0].x*10,snake[0].y*10,10,10);
+  snake.forEach((snake) => ctx.fillRect(snake.x*10,snake.y*10,10,10));
 }
-function gameStart(){
   function draw(){
   if(gamestart){
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -74,36 +89,45 @@ function gameStart(){
     drawSnake();
     let dx,dy;
     switch(direction){
-      case "right":
-        dx = 1;
-        dy = 0;
-      break;
-      case "left":
-        dx = -1;
-        dy = 0;
-      break;
-      case "up":
-        dx = 0;
-        dy = -1;
-      break;
-      case "down":
-        dx = 0;
-        dy = 1;
-      break;
+        case "right":
+          dx = 1;
+          dy = 0;
+        break;
+        case "left":
+          dx = -1;
+          dy = 0;
+        break;
+        case "up":
+          dx = 0;
+          dy = -1;
+        break;
+        case "down":
+          dx = 0;
+          dy = 1;
+        break;
+      }
+      const head = {x: snake[0].x + dx,y: snake[0].y + dy};
+      const appleIndex = apples.findIndex(apple => head.x === apple.x && head.y === apple.y);
+      if(appleIndex !== -1){
+        apples.splice(appleIndex, 1);
+        snake.unshift(head); 
+        score+=20;
+        score_title.innerText = score;
+      }
+      else{
+        snake.unshift(head); 
+        snake.pop();
+      }
+        
     }
-    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-    snake.unshift(head); 
-    snake.pop();
-  }
-  else
-    clearInterval(gameid);
+      else
+        clearInterval(gameid);
   };
-  const gameid = setInterval(draw,100);
-};
-
+  
 $("[data-start]").click(function(){
   gamestart = true;
-  gameStart();
+  const gameid = setInterval(draw,100);
 });
 
-draw();
+NewApple();
+drawSnake();
