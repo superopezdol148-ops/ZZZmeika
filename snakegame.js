@@ -1,7 +1,12 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const score_title = document.querySelector(".score");
+const game_Over = document.querySelector("#gameOver");
+const game_Win = document.querySelector("#gameWin");
+const final_score_over = document.querySelector(".finalScoreOver");
+const final_score_win = document.querySelector(".finalScoreWin");
 
+let gameid;
 canvas.width = 200;
 canvas.height = 200;
 
@@ -15,8 +20,22 @@ let gamestart = false;
 let score = 0;
 
 let direction = 'right';    
+let nextdirection = 'right';
 
 let snake = [{x: 1, y: 1}];
+
+$("[data-over]").click(function(){
+  game_Over.classList.remove("active");
+  game_Win.classList.remove("active");
+  apples = [];
+  snake = [{x: 1, y: 1}];
+  direction = nextdirection = 'right';
+  score = 0;
+  score_title.innerText = score;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  NewApple();
+  drawSnake();
+});
 
 $("[data-mode]").click(function(){
   if(gamestart == true)
@@ -24,7 +43,7 @@ $("[data-mode]").click(function(){
 
   apples = [];
   snake = [{x: 1, y: 1}];
-  direction = 'right';
+  direction = nextdirection = 'right';
 
   let mode = $(this).data("mode");
   let points = document.getElementById(mode);
@@ -49,14 +68,13 @@ $("[data-mode]").click(function(){
 
 document.addEventListener("keydown", (e) => {
   if (e.keyCode == 37 && direction != "right")
-    direction = "left";
+    nextdirection = "left";
   else if (e.keyCode == 38 && direction != "down") 
-    direction = "up";
+    nextdirection = "up";
   else if (e.keyCode == 39 && direction != "left") 
-    direction = "right";
+    nextdirection = "right";
   else if (e.keyCode == 40 && direction != "up") 
-    direction = "down";
-  console.log(direction);
+    nextdirection = "down";
 });
 
 function rand(min, max){
@@ -66,67 +84,79 @@ function rand(min, max){
 console.log(rand(0, 10));
 
 function NewApple(){
-  if(apples.length<widthmode/100){
-  let newX = rand(-1,max);
-  let newY = rand(-1,max);
-  apples.push({x: newX, y: newY});
-  console.log(apples.length);
+  const targetCount = Math.max(1, Math.floor(widthmode / 100));
+  while (apples.length < targetCount) {
+      let newX = rand(0, max);
+      let newY = rand(0, max);
+      
+      const inSnake = snake.some(part => part.x === newX && part.y === newY);
+      if (!inSnake) {
+          apples.push({ x: newX, y: newY });
+      }
   }
-  if(apples.length<widthmode/100)
-    NewApple();
   ctx.fillStyle = "red";
-  apples.forEach((apple) => ctx.fillRect(apple.x*10,apple.y*10,10,10));
+  apples.forEach((apple) => ctx.fillRect(apple.x*10+1,apple.y*10+1,8,8));
 }
 
 function drawSnake(){
   ctx.fillStyle = "green";
-  snake.forEach((snake) => ctx.fillRect(snake.x*10,snake.y*10,10,10));
+  snake.forEach((snake) => ctx.fillRect(snake.x*10+1,snake.y*10+1,8,8));
 }
   function draw(){
   if(gamestart){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     NewApple();
     drawSnake();
-    let dx,dy;
-    switch(direction){
-        case "right":
-          dx = 1;
-          dy = 0;
-        break;
-        case "left":
-          dx = -1;
-          dy = 0;
-        break;
-        case "up":
-          dx = 0;
-          dy = -1;
-        break;
-        case "down":
-          dx = 0;
-          dy = 1;
-        break;
-      }
-      const head = {x: snake[0].x + dx,y: snake[0].y + dy};
-      const appleIndex = apples.findIndex(apple => head.x === apple.x && head.y === apple.y);
-      if(appleIndex !== -1){
-        apples.splice(appleIndex, 1);
-        snake.unshift(head); 
-        score+=20;
-        score_title.innerText = score;
-      }
-      else{
-        snake.unshift(head); 
-        snake.pop();
-      }
-        
+
+    direction = nextdirection;
+    let head = { ...snake[0] };
+
+    if (direction === "right") head.x++;
+    else if (direction === "left") head.x--;
+    else if (direction === "up") head.y--;
+    else if (direction === "down") head.y++;
+
+    const snakeBody = snake.findIndex(snake => head.x == snake.x && head.y == snake.y);
+    if(head.x > max || head.x < 0 || head.y > max || head.y < 0 || snakeBody != -1){
+      gamestart = false;
+      final_score_over.innerText = `Ваш счeт : ${score}`;
+      game_Over.classList.add("active");
+      clearInterval(gameid);
     }
-      else
+
+    const appleIndex = apples.findIndex(apple => head.x == apple.x && head.y == apple.y);
+    if(appleIndex != -1){
+      apples.splice(appleIndex, 1);
+       snake.unshift(head); 
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      NewApple();
+      drawSnake();
+      score+=20;
+      score_title.innerText = score;
+      if(score == maxPoints){
+        gamestart = false;
+        final_score_win.innerText = `Ваш счeт : ${score}`;
+        game_Win.classList.add("active");
         clearInterval(gameid);
+      }
+    }
+
+     else{
+      snake.unshift(head); 
+      snake.pop();
+     }
+        
+   }
+    else{
+       clearInterval(gameid);
+    }
   };
   
 $("[data-start]").click(function(){
-  gamestart = true;
-  const gameid = setInterval(draw,100);
+  if(gamestart != true){
+    gamestart = true;
+    gameid = setInterval(draw,150);
+  }
 });
 
 NewApple();

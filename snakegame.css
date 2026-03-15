@@ -24,6 +24,12 @@ h1 {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     animation: neon-3 5s steps(1, start) infinite reverse;
 }
+.body{
+    display: flex;
+    gap: 30px;
+    width: 1200px;
+    justify-content: center;
+}
 @keyframes neon-3 {
     0%{ 
         color: #0b3960;  
@@ -57,12 +63,6 @@ h1 {
         text-shadow: 0 0 7px #0b3960,0 0 8px #0b3960;
     }
 }
-.container {
-    display: flex;
-    gap: 30px;
-    width: 1200px;
-    justify-content: center;
-}
 .game-container {
     display: flex;
     flex-direction: column;
@@ -73,6 +73,19 @@ h1 {
     justify-content: center;
     width: 100%;
     margin-bottom: 15px;
+}
+.level{
+    padding: 3px;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: white;
+}
+.level.active{
+    background: linear-gradient(to right, #f39c12, #e67e22);
+    box-shadow: 0 0 15px #df7e29;
 }
 .score-container {
     background-color: rgba(0, 0, 0, 0.3);
@@ -167,8 +180,6 @@ button {
 }
 .game-over {
     position: absolute;
-    top: 50%;
-    left: 50%;
     background-color: rgba(0, 0, 0, 0.85);
     padding: 30px;
     border-radius: 15px;
@@ -186,4 +197,30 @@ button {
 .game-over p {
     margin-bottom: 20px;
     font-size: 19px;
+}
+.game-over.active{
+    display: block;
+}
+.game-win {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    z-index: 10;
+    display: none;
+    box-shadow: 0 0 30px rgba(44, 219, 0, 0.5);
+    border: 3px solid #33ff33;
+}
+.game-win h2 {
+    color: #33ff33;
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+.game-win p {
+    margin-bottom: 20px;
+    font-size: 19px;
+}
+.game-win.active{
+    display: block;
 }
