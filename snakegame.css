@@ -80,8 +80,14 @@ h1 {
     border-radius: 8px;
     font-size: 17px;
     font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
     background: linear-gradient(to right, #3498db, #2980b9);
     color: white;
+}
+.level:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
 }
 .level.active{
     background: linear-gradient(to right, #f39c12, #e67e22);

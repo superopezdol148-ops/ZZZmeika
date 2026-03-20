@@ -18,11 +18,55 @@ let cell = 10;
 let max = canvas.width/10;
 let gamestart = false;
 let score = 0;
+let speed = 150;
+let walls = [];
+let wallsWill;
 
 let direction = 'right';    
 let nextdirection = 'right';
 
+function wallCreate(a){
+  walls.length = 0;
+  for(let i = a; i > 0; i--){
+    let newX = rand(0, max);
+    let newY = rand(0, max);
+    
+    const inSnake = snake.some(part => part.x === newX && part.y === newY);
+    const inApple = apples.some(part => part.x === newX && part.y === newY);
+    if (!inSnake && !inApple) {
+        walls.push({ x: newX, y: newY });
+    }
+  }
+  return;
+}
+
 let snake = [{x: 1, y: 1}];
+$("[data-level]").click(function(){
+  if(!gamestart){
+    wallsWill = 0;
+    walls.length = 0;
+    speed = 150;
+    if($(this).data("level") > 5 && $(this).data("level") != 0){
+      speed = $(this).data("level");
+    }
+
+    if($(this).data("level") <= 5 && $(this).data("level") != 0){
+      wallsWill = $(this).data("level");
+      wallCreate(wallsWill);
+    }
+
+    console.log(walls);
+
+    $(`.level`).removeClass("active");
+
+    $(this).addClass("active");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    NewApple();
+    drawSnake();
+    drawWalls();
+  } 
+});
 
 $("[data-over]").click(function(){
   game_Over.classList.remove("active");
@@ -35,6 +79,8 @@ $("[data-over]").click(function(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   NewApple();
   drawSnake();
+  wallCreate(wallsWill);
+  drawWalls();
 });
 
 $("[data-mode]").click(function(){
@@ -53,6 +99,9 @@ $("[data-mode]").click(function(){
   canvas.height = heightmode;
   max = canvas.width/10;
 
+  for(let i = $(this).data("level"); i > 0; i--)
+    walls.push({x: rand(0,max), y: rand(0,max)});
+
   $(`#modeSmall`).removeClass("active");
   
   $(`#modeMedium`).removeClass("active");
@@ -62,8 +111,10 @@ $("[data-mode]").click(function(){
   $(`#${mode}`).addClass("active");
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
+  wallCreate(wallsWill);
   NewApple();
   drawSnake();
+  drawWalls();
 });
 
 document.addEventListener("keydown", (e) => {
@@ -90,25 +141,36 @@ function NewApple(){
       let newY = rand(0, max);
       
       const inSnake = snake.some(part => part.x === newX && part.y === newY);
-      if (!inSnake) {
+      const inWall = walls.some(part => part.x === newX && part.y === newY);
+      if (!inSnake && !inWall) {
           apples.push({ x: newX, y: newY });
       }
   }
   ctx.fillStyle = "red";
   apples.forEach((apple) => ctx.fillRect(apple.x*10+1,apple.y*10+1,8,8));
+  return;
 }
 
 function drawSnake(){
   ctx.fillStyle = "green";
   snake.forEach((snake) => ctx.fillRect(snake.x*10+1,snake.y*10+1,8,8));
+  return;
 }
+
+function drawWalls(){
+  ctx.fillStyle = "gray";
+  walls.forEach((wall) => ctx.fillRect(wall.x*10+1,wall.y*10+1,8,8));
+  return;
+}
+
   function draw(){
   if(gamestart){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     NewApple();
     drawSnake();
-
+    drawWalls();
     direction = nextdirection;
+    
     let head = { ...snake[0] };
 
     if (direction === "right") head.x++;
@@ -117,7 +179,9 @@ function drawSnake(){
     else if (direction === "down") head.y++;
 
     const snakeBody = snake.findIndex(snake => head.x == snake.x && head.y == snake.y);
-    if(head.x > max || head.x < 0 || head.y > max || head.y < 0 || snakeBody != -1){
+    const wallIndex = walls.findIndex(walls => head.x == walls.x && walls.y == snake.y);
+
+    if(head.x > max || head.x < 0 || head.y > max || head.y < 0 || snakeBody != -1 || wallIndex != -1){
       gamestart = false;
       final_score_over.innerText = `Ваш счeт : ${score}`;
       game_Over.classList.add("active");
@@ -128,16 +192,14 @@ function drawSnake(){
     if(appleIndex != -1){
       apples.splice(appleIndex, 1);
        snake.unshift(head); 
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      NewApple();
-      drawSnake();
-      score+=20;
+      score+=1000;
       score_title.innerText = score;
       if(score == maxPoints){
         gamestart = false;
         final_score_win.innerText = `Ваш счeт : ${score}`;
         game_Win.classList.add("active");
         clearInterval(gameid);
+        return;
       }
     }
 
@@ -155,9 +217,10 @@ function drawSnake(){
 $("[data-start]").click(function(){
   if(gamestart != true){
     gamestart = true;
-    gameid = setInterval(draw,150);
+    gameid = setInterval(draw,speed);
   }
 });
 
 NewApple();
 drawSnake();
+drawWalls();
