@@ -25,6 +25,8 @@ let wallsWill;
 let direction = 'right';    
 let nextdirection = 'right';
 
+
+
 function wallCreate(a){
   walls.length = 0;
   for(let i = a; i > 0; i--){
@@ -33,9 +35,13 @@ function wallCreate(a){
     
     const inSnake = snake.some(part => part.x === newX && part.y === newY);
     const inApple = apples.some(part => part.x === newX && part.y === newY);
-    if (!inSnake && !inApple) {
+    const inWall = walls.some(part => part.x === newX && part.y === newY);
+    if (!inSnake && !inApple && !inWall) {
         walls.push({ x: newX, y: newY });
     }
+    else
+      i++;
+    
   }
   return;
 }
@@ -68,6 +74,8 @@ $("[data-level]").click(function(){
   } 
 });
 
+
+
 $("[data-over]").click(function(){
   game_Over.classList.remove("active");
   game_Win.classList.remove("active");
@@ -82,6 +90,8 @@ $("[data-over]").click(function(){
   wallCreate(wallsWill);
   drawWalls();
 });
+
+
 
 $("[data-mode]").click(function(){
   if(gamestart == true)
@@ -98,6 +108,7 @@ $("[data-mode]").click(function(){
   canvas.width = widthmode;
   canvas.height = heightmode;
   max = canvas.width/10;
+
 
   for(let i = $(this).data("level"); i > 0; i--)
     walls.push({x: rand(0,max), y: rand(0,max)});
@@ -117,6 +128,8 @@ $("[data-mode]").click(function(){
   drawWalls();
 });
 
+
+
 document.addEventListener("keydown", (e) => {
   if (e.keyCode == 37 && direction != "right")
     nextdirection = "left";
@@ -128,11 +141,14 @@ document.addEventListener("keydown", (e) => {
     nextdirection = "down";
 });
 
+
+
 function rand(min, max){
   let x = Math.random() * (max - min) + min
   return Math.trunc(x);
 }
-console.log(rand(0, 10));
+
+
 
 function NewApple(){
   const targetCount = Math.max(1, Math.floor(widthmode / 100));
@@ -151,11 +167,15 @@ function NewApple(){
   return;
 }
 
+
+
 function drawSnake(){
   ctx.fillStyle = "green";
   snake.forEach((snake) => ctx.fillRect(snake.x*10+1,snake.y*10+1,8,8));
   return;
 }
+
+
 
 function drawWalls(){
   ctx.fillStyle = "gray";
@@ -163,7 +183,9 @@ function drawWalls(){
   return;
 }
 
-  function draw(){
+
+
+function draw(){
   if(gamestart){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     NewApple();
@@ -171,29 +193,38 @@ function drawWalls(){
     drawWalls();
     direction = nextdirection;
     
-    let head = { ...snake[0] };
+    let head = { ...snake[0] }; // копирует первый элемент массива snake
 
     if (direction === "right") head.x++;
     else if (direction === "left") head.x--;
     else if (direction === "up") head.y--;
     else if (direction === "down") head.y++;
 
+    /*-Если не найдет в массиве индекс с такими показателями, то вернет -1 в ином случае поражение-*/
     const snakeBody = snake.findIndex(snake => head.x == snake.x && head.y == snake.y);
-    const wallIndex = walls.findIndex(walls => head.x == walls.x && walls.y == snake.y);
+    const wallIndex = walls.findIndex(walls => head.x == walls.x && head.y == walls.y);
+    /*---------------------------------------------------------------------------------------------*/
 
+
+    /*----------------------------Проверка на проигрыша----------------------------*/
     if(head.x > max || head.x < 0 || head.y > max || head.y < 0 || snakeBody != -1 || wallIndex != -1){
       gamestart = false;
       final_score_over.innerText = `Ваш счeт : ${score}`;
       game_Over.classList.add("active");
       clearInterval(gameid);
     }
+    /*-----------------------------------------------------------------------------*/
 
+    /*----------------------------Проверка на съедение яблок----------------------------*/
     const appleIndex = apples.findIndex(apple => head.x == apple.x && head.y == apple.y);
     if(appleIndex != -1){
       apples.splice(appleIndex, 1);
        snake.unshift(head); 
       score+=1000;
       score_title.innerText = score;
+    /*----------------------------------------------------------------------------------*/
+
+      /*----------------------------Проверка на победу----------------------------*/
       if(score == maxPoints){
         gamestart = false;
         final_score_win.innerText = `Ваш счeт : ${score}`;
@@ -201,6 +232,8 @@ function drawWalls(){
         clearInterval(gameid);
         return;
       }
+      /*--------------------------------------------------------------------------*/
+
     }
 
      else{
@@ -208,11 +241,11 @@ function drawWalls(){
       snake.pop();
      }
         
-   }
-    else{
-       clearInterval(gameid);
-    }
-  };
+  }
+  else{
+    clearInterval(gameid);
+  }
+};
   
 $("[data-start]").click(function(){
   if(gamestart != true){
