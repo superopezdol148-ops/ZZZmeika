@@ -5,16 +5,16 @@ const game_Over = document.querySelector("#gameOver");
 const game_Win = document.querySelector("#gameWin");
 const final_score_over = document.querySelector(".finalScoreOver");
 const final_score_win = document.querySelector(".finalScoreWin");
+const eatAudio = new Audio("apple-bite-short.mp3");
 
 let gameid;
 canvas.width = 200;
 canvas.height = 200;
 
-let maxPoints = 4000;
+let maxPoints = 8000;
 let widthmode = 200;
 let heightmode = widthmode; 
 let apples = [];
-let cell = 10;
 let max = canvas.width/10;
 let gamestart = false;
 let score = 0;
@@ -60,8 +60,6 @@ $("[data-level]").click(function(){
       wallsWill = $(this).data("level");
       wallCreate(wallsWill);
     }
-
-    console.log(walls);
 
     $(`.level`).removeClass("active");
 
@@ -187,10 +185,6 @@ function drawWalls(){
 
 function draw(){
   if(gamestart){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    NewApple();
-    drawSnake();
-    drawWalls();
     direction = nextdirection;
     
     let head = { ...snake[0] }; // копирует первый элемент массива snake
@@ -199,6 +193,7 @@ function draw(){
     else if (direction === "left") head.x--;
     else if (direction === "up") head.y--;
     else if (direction === "down") head.y++;
+    console.log(head);
 
     /*-Если не найдет в массиве индекс с такими показателями, то вернет -1 в ином случае поражение-*/
     const snakeBody = snake.findIndex(snake => head.x == snake.x && head.y == snake.y);
@@ -218,29 +213,34 @@ function draw(){
     /*----------------------------Проверка на съедение яблок----------------------------*/
     const appleIndex = apples.findIndex(apple => head.x == apple.x && head.y == apple.y);
     if(appleIndex != -1){
+      eatAudio.play();
       apples.splice(appleIndex, 1);
        snake.unshift(head); 
       score+=1000;
       score_title.innerText = score;
     /*----------------------------------------------------------------------------------*/
 
-      /*----------------------------Проверка на победу----------------------------*/
-      if(score == maxPoints){
-        gamestart = false;
-        final_score_win.innerText = `Ваш счeт : ${score}`;
-        game_Win.classList.add("active");
-        clearInterval(gameid);
-        return;
-      }
-      /*--------------------------------------------------------------------------*/
-
+    /*----------------------------Проверка на победу----------------------------*/
+    if(score == maxPoints){
+      gamestart = false;
+      final_score_win.innerText = `Ваш счeт : ${score}`;
+      game_Win.classList.add("active");
+      clearInterval(gameid);
+      return;
     }
+    /*--------------------------------------------------------------------------*/
+
+  }
 
      else{
       snake.unshift(head); 
       snake.pop();
      }
-        
+
+     ctx.clearRect(0,0,canvas.width,canvas.height);
+     NewApple();
+     drawSnake();
+     drawWalls();
   }
   else{
     clearInterval(gameid);
