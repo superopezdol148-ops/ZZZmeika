@@ -7,6 +7,7 @@ const final_score_over = document.querySelector(".finalScoreOver");
 const final_score_win = document.querySelector(".finalScoreWin");
 const eatAudio = new Audio("apple-bite-short.mp3");
 
+let sound = false;
 let gameid;
 canvas.width = 200;
 canvas.height = 200;
@@ -20,6 +21,7 @@ let gamestart = false;
 let score = 0;
 let speed = 150;
 let walls = [];
+let snake = [{x: 1, y: 1}];
 let wallsWill;
 
 let direction = 'right';    
@@ -46,7 +48,6 @@ function wallCreate(a){
   return;
 }
 
-let snake = [{x: 1, y: 1}];
 $("[data-level]").click(function(){
   if(!gamestart){
     wallsWill = 0;
@@ -89,6 +90,31 @@ $("[data-over]").click(function(){
   drawWalls();
 });
 
+
+
+$("[data-modal]").click(function(){
+  let modalId = $(this).data("modal");
+
+  $(`#${modalId}`).addClass("active");
+});
+
+
+
+$("[data-close]").click(function(){
+  let modalId = $(this).data("close");
+
+  $(`#${modalId}`).removeClass("active");
+});
+
+
+$("[data-sound").click(function(){
+  sound = !sound;
+  let soundImg = document.querySelector("#sound");
+  if(sound)
+    soundImg.src = "http://127.0.0.1:5500/Papki/Zmeika/pngwing.com (1).png";
+  else
+    soundImg.src = "http://127.0.0.1:5500/Papki/Zmeika/pngwing.com(2).png";
+});
 
 
 $("[data-mode]").click(function(){
@@ -184,71 +210,71 @@ function drawWalls(){
 
 
 function draw(){
-  if(gamestart){
-    direction = nextdirection;
-    
-    let head = { ...snake[0] }; // копирует первый элемент массива snake
+  direction = nextdirection;
+  
+  let head = { ...snake[0] }; // копирует первый элемент массива snake
 
-    if (direction === "right") head.x++;
-    else if (direction === "left") head.x--;
-    else if (direction === "up") head.y--;
-    else if (direction === "down") head.y++;
-    console.log(head);
+  if (direction === "right") head.x++;
+  else if (direction === "left") head.x--;
+  else if (direction === "up") head.y--;
+  else if (direction === "down") head.y++;
 
-    /*-Если не найдет в массиве индекс с такими показателями, то вернет -1 в ином случае поражение-*/
-    const snakeBody = snake.findIndex(snake => head.x == snake.x && head.y == snake.y);
-    const wallIndex = walls.findIndex(walls => head.x == walls.x && head.y == walls.y);
-    /*---------------------------------------------------------------------------------------------*/
+  /*-Если не найдет в массиве индекс с такими показателями, то вернет -1 в ином случае поражение-*/
+  const snakeBody = snake.findIndex(snake => head.x == snake.x && head.y == snake.y);
+  const wallIndex = walls.findIndex(walls => head.x == walls.x && head.y == walls.y);
+  /*---------------------------------------------------------------------------------------------*/
 
 
-    /*----------------------------Проверка на проигрыша----------------------------*/
-    if(head.x > max || head.x < 0 || head.y > max || head.y < 0 || snakeBody != -1 || wallIndex != -1){
-      gamestart = false;
-      final_score_over.innerText = `Ваш счeт : ${score}`;
-      game_Over.classList.add("active");
-      clearInterval(gameid);
-    }
-    /*-----------------------------------------------------------------------------*/
-
-    /*----------------------------Проверка на съедение яблок----------------------------*/
-    const appleIndex = apples.findIndex(apple => head.x == apple.x && head.y == apple.y);
-    if(appleIndex != -1){
-      eatAudio.play();
-      apples.splice(appleIndex, 1);
-       snake.unshift(head); 
-      score+=1000;
-      score_title.innerText = score;
-    /*----------------------------------------------------------------------------------*/
-
-    /*----------------------------Проверка на победу----------------------------*/
-    if(score == maxPoints){
-      gamestart = false;
-      final_score_win.innerText = `Ваш счeт : ${score}`;
-      game_Win.classList.add("active");
-      clearInterval(gameid);
-      return;
-    }
-    /*--------------------------------------------------------------------------*/
-
-  }
-
-     else{
-      snake.unshift(head); 
-      snake.pop();
-     }
-
-     ctx.clearRect(0,0,canvas.width,canvas.height);
-     NewApple();
-     drawSnake();
-     drawWalls();
-  }
-  else{
+  /*----------------------------Проверка на проигрыша----------------------------*/
+  if(head.x >= max || head.x < 0 || head.y >= max || head.y < 0 || snakeBody != -1 || wallIndex != -1){
+    gamestart = false;
+    final_score_over.innerText = `Ваш счeт : ${score}`;
+    game_Over.classList.add("active");
     clearInterval(gameid);
+    return;
   }
+  /*-----------------------------------------------------------------------------*/
+
+  /*----------------------------Проверка на съедение яблок----------------------------*/
+  const appleIndex = apples.findIndex(apple => head.x == apple.x && head.y == apple.y);
+  if(appleIndex != -1){
+    if(sound)
+      eatAudio.play();
+    apples.splice(appleIndex, 1);
+    snake.unshift(head); 
+    score+=1000;
+    score_title.innerText = score;
+  /*----------------------------------------------------------------------------------*/
+
+  /*----------------------------Проверка на победу----------------------------*/
+  if(score == maxPoints){
+    gamestart = false;
+    final_score_win.innerText = `Ваш счeт : ${score}`;
+    game_Win.classList.add("active");
+    clearInterval(gameid);
+    return;
+  }
+  /*--------------------------------------------------------------------------*/
+
+  }
+
+   else{
+    snake.unshift(head); 
+    snake.pop();
+   }
+
+   ctx.clearRect(0,0,canvas.width,canvas.height);
+   NewApple();
+   drawSnake();
+   drawWalls();
+
+   ctx.fillStyle = "darkgreen";
+   ctx.fillRect(head.x*10+1,head.y*10+1,8,8);
 };
   
 $("[data-start]").click(function(){
   if(gamestart != true){
+    nextdirection = "right";
     gamestart = true;
     gameid = setInterval(draw,speed);
   }

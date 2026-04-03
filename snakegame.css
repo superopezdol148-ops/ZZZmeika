@@ -18,6 +18,66 @@ body {
     text-align: center;
     margin-bottom: 20px;
 }
+
+.settings{
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    box-shadow: 0px 0px 6px 6px rgba(34, 60, 80, 0.43) inset, 0px 0px 6px 6px rgba(255, 255, 255, 0);
+    transition: all 0.3s ease;
+}
+
+.settings:hover{
+    box-shadow: 0px 0px 6px 6px rgba(34, 60, 80, 0) inset, 0px 0px 6px 6px rgba(255, 255, 255, 0.43);
+}
+
+.modal{
+    width: 100%;
+    height: 100vh;
+    position:fixed;
+    top: 0;
+    left: 0;
+    background-color:rgba(0, 0, 0, 0.6);
+    z-index: -1;
+    opacity: 0;
+    transition: all 0.2s ease-in;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal.active{
+    opacity: 1;
+    z-index: 999;
+  }
+  .modal-content{
+    width: 100%;
+    max-width: 300px;
+    background-color: #202137;
+    border-radius: 30px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: all 0.2s ease-in;
+}
+.modal.active .modal-content{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sound{
+    width: 100px;
+    height: 100px;
+}
+
 h1 {
     font-size: 44px;
     margin-bottom: 5px;
@@ -229,4 +289,8 @@ button {
 }
 .game-win.active{
     display: block;
+}
+img{
+    width: 100%;
+    height: 100%;
 }
