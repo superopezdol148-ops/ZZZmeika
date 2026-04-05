@@ -13,6 +13,7 @@ canvas.width = 200;
 canvas.height = 200;
 
 let maxPoints = 8000;
+let maxPointsDublicat = maxPoints;
 let widthmode = 200;
 let heightmode = widthmode; 
 let apples = [];
@@ -38,18 +39,18 @@ function wallCreate(a){
     const inSnake = snake.some(part => part.x === newX && part.y === newY);
     const inApple = apples.some(part => part.x === newX && part.y === newY);
     const inWall = walls.some(part => part.x === newX && part.y === newY);
-    if (!inSnake && !inApple && !inWall) {
+    if (!inSnake && !inApple && !inWall ){
         walls.push({ x: newX, y: newY });
     }
     else
       i++;
-    
   }
   return;
 }
 
 $("[data-level]").click(function(){
   if(!gamestart){
+    maxPoints = maxPointsDublicat;
     wallsWill = 0;
     walls.length = 0;
     speed = 150;
@@ -60,6 +61,8 @@ $("[data-level]").click(function(){
     if($(this).data("level") <= 5 && $(this).data("level") != 0){
       wallsWill = $(this).data("level");
       wallCreate(wallsWill);
+      maxPoints-=wallsWill*20;
+      console.log(maxPoints);
     }
 
     $(`.level`).removeClass("active");
@@ -126,8 +129,9 @@ $("[data-mode]").click(function(){
   direction = nextdirection = 'right';
 
   let mode = $(this).data("mode");
-  let points = document.getElementById(mode);
+  const points = document.getElementById(mode);
   maxPoints = points.classList[1];
+  maxPointsDublicat = maxPoints;
   widthmode = heightmode = points.classList[2];
   canvas.width = widthmode;
   canvas.height = heightmode;
@@ -242,7 +246,7 @@ function draw(){
       eatAudio.play();
     apples.splice(appleIndex, 1);
     snake.unshift(head); 
-    score+=1000;
+    score+=20;
     score_title.innerText = score;
   /*----------------------------------------------------------------------------------*/
 
