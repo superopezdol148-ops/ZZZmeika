@@ -248,18 +248,17 @@ function draw(){
     snake.unshift(head); 
     score+=20;
     score_title.innerText = score;
-  /*----------------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------------*/
 
-  /*----------------------------Проверка на победу----------------------------*/
-  if(score == maxPoints){
-    gamestart = false;
-    final_score_win.innerText = `Ваш счeт : ${score}`;
-    game_Win.classList.add("active");
-    clearInterval(gameid);
-    return;
-  }
-  /*--------------------------------------------------------------------------*/
-
+    /*----------------------------Проверка на победу----------------------------*/
+    if(score == maxPoints){
+      gamestart = false;
+      final_score_win.innerText = `Ваш счeт : ${score}`;
+      game_Win.classList.add("active");
+      clearInterval(gameid);
+      return;
+    }
+    /*--------------------------------------------------------------------------*/
   }
 
    else{
@@ -283,6 +282,23 @@ $("[data-start]").click(function(){
     gameid = setInterval(draw,speed);
   }
 });
+
+$("[data-stop]").click(function(){
+  let stopButton = document.getElementsByClassName("stop-btn");
+  
+  if(gamestart == false){
+    gamestart = true;
+    stopButton[0].innerText = "ПАУЗА";
+    gameid = setInterval(draw,speed);
+    return;
+  }
+  if(gamestart == true){
+    gamestart = false;
+    stopButton[0].innerText = "ПРОДОЛЖИТЬ";
+    clearInterval(gameid);
+    return;
+  }
+}); 
 
 NewApple();
 drawSnake();

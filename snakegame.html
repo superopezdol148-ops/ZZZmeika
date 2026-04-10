@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="./snakegame.css">
 </head>
 <body>
-    <div class="header">
+    <header>
         <h1>ЗМЕЙКА</h1>
-    </div>
+    </header>
         
     <button class="settings" data-modal="modal">
         <img src="./pngwing.com.png" alt="settings">
@@ -28,7 +28,7 @@
     <div class="body">
         <div class="controls">
             <div class="mode-selector">
-                <h2>УРОВНИ</h2>
+                <h2>УРОВНИ СЛОЖНОСТИ</h2>
                 <div class="mode-buttons">
                     <button class="level active" data-level="0"><p>1 УРОВЕНЬ</p><p>простая змейка</p></button>
                     <button class="level" data-level="100"><p>2 УРОВЕНЬ</p><p>повышение скорости</p></button>
@@ -59,6 +59,7 @@
             </div>
                 <div class="buttons">
                     <button class="start-btn" data-start="startBtn">НАЧАТЬ ИГРУ</button>
+                    <button class="stop-btn" data-stop="stop">ПАУЗА</button>
                 </div>
             </div>
         </div>
@@ -74,5 +75,5 @@
     </div>
     <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
     <script src="./snakegame.js"></script>
-    </body>
+</body>
 </html>

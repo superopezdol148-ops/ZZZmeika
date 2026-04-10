@@ -14,7 +14,7 @@ body {
     color: #fff;
     padding: 20px;
 }
-.header {
+header {
     text-align: center;
     margin-bottom: 20px;
 }
@@ -236,8 +236,8 @@ h2 {
 .buttons {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 25px;
 }
 button {
     padding: 15px;
@@ -256,6 +256,15 @@ button {
     background: linear-gradient(to right, #f1c40f, #f39c12);
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+}
+.stop-btn {
+    background: linear-gradient(to right, #2ecc71, #27ae60);
+    color: white;
+}
+.stop-btn:hover {
+    background: linear-gradient(to right, #30d475, #2cd372);
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px #37e67f;
 }
 .game-over {
     position: absolute;
