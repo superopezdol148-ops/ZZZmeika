@@ -8,6 +8,7 @@ const final_score_win = document.querySelector(".finalScoreWin");
 const eatAudio = new Audio("apple-bite-short.mp3");
 
 let sound = false;
+let gamePaused = false;
 let gameid;
 canvas.width = 200;
 canvas.height = 200;
@@ -20,7 +21,7 @@ let apples = [];
 let max = canvas.width/10;
 let gamestart = false;
 let score = 0;
-let speed = 150;
+let speed = 200;
 let walls = [];
 let snake = [{x: 1, y: 1}];
 let wallsWill;
@@ -33,13 +34,13 @@ let nextdirection = 'right';
 function wallCreate(a){
   walls.length = 0;
   for(let i = a; i > 0; i--){
-    let newX = rand(0, max);
-    let newY = rand(0, max);
+    let newX = rand(1, max-1);
+    let newY = rand(2, max-1);
     
     const inSnake = snake.some(part => part.x === newX && part.y === newY);
     const inApple = apples.some(part => part.x === newX && part.y === newY);
     const inWall = walls.some(part => part.x === newX && part.y === newY);
-    if (!inSnake && !inApple && !inWall ){
+    if (!inSnake && !inApple && !inWall){
         walls.push({ x: newX, y: newY });
     }
     else
@@ -114,9 +115,9 @@ $("[data-sound").click(function(){
   sound = !sound;
   let soundImg = document.querySelector("#sound");
   if(sound)
-    soundImg.src = "http://127.0.0.1:5500/Papki/Zmeika/pngwing.com (1).png";
-  else
     soundImg.src = "http://127.0.0.1:5500/Papki/Zmeika/pngwing.com(2).png";
+  else
+    soundImg.src = "http://127.0.0.1:5500/Papki/Zmeika/pngwing.com (1).png";
 });
 
 
@@ -159,14 +160,16 @@ $("[data-mode]").click(function(){
 
 
 document.addEventListener("keydown", (e) => {
-  if (e.keyCode == 37 && direction != "right")
-    nextdirection = "left";
-  else if (e.keyCode == 38 && direction != "down") 
-    nextdirection = "up";
-  else if (e.keyCode == 39 && direction != "left") 
-    nextdirection = "right";
-  else if (e.keyCode == 40 && direction != "up") 
-    nextdirection = "down";
+  if(!gamePaused){
+    if (e.keyCode == 37 && direction != "right")
+      nextdirection = "left";
+    else if (e.keyCode == 38 && direction != "down") 
+      nextdirection = "up";
+    else if (e.keyCode == 39 && direction != "left") 
+      nextdirection = "right";
+    else if (e.keyCode == 40 && direction != "up") 
+      nextdirection = "down";
+  }
 });
 
 
@@ -192,6 +195,8 @@ function NewApple(){
   }
   ctx.fillStyle = "red";
   apples.forEach((apple) => ctx.fillRect(apple.x*10+1,apple.y*10+1,8,8));
+  ctx.fillStyle = "black";
+  apples.forEach((apple) => ctx.strokeRect(apple.x*10+1,apple.y*10+1,8,8));
   return;
 }
 
@@ -200,6 +205,8 @@ function NewApple(){
 function drawSnake(){
   ctx.fillStyle = "green";
   snake.forEach((snake) => ctx.fillRect(snake.x*10+1,snake.y*10+1,8,8));
+  ctx.fillStyle = "darkgreen";
+  snake.forEach((snake) => ctx.strokeRect(snake.x*10+1,snake.y*10+1,8,8));
   return;
 }
 
@@ -208,6 +215,8 @@ function drawSnake(){
 function drawWalls(){
   ctx.fillStyle = "gray";
   walls.forEach((wall) => ctx.fillRect(wall.x*10+1,wall.y*10+1,8,8));
+  ctx.fillStyle = "black";
+  walls.forEach((wall) => ctx.strokeRect(wall.x*10+1,wall.y*10+1,8,8));
   return;
 }
 
@@ -248,7 +257,7 @@ function draw(){
     snake.unshift(head); 
     score+=20;
     score_title.innerText = score;
-    /*----------------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------------*/
 
     /*----------------------------Проверка на победу----------------------------*/
     if(score == maxPoints){
@@ -276,7 +285,7 @@ function draw(){
 };
   
 $("[data-start]").click(function(){
-  if(gamestart != true){
+  if(!gamestart && !gamePaused){
     nextdirection = "right";
     gamestart = true;
     gameid = setInterval(draw,speed);
@@ -286,14 +295,16 @@ $("[data-start]").click(function(){
 $("[data-stop]").click(function(){
   let stopButton = document.getElementsByClassName("stop-btn");
   
-  if(gamestart == false){
+  if(!gamestart && gamePaused){
     gamestart = true;
+    gamePaused = false;
     stopButton[0].innerText = "ПАУЗА";
     gameid = setInterval(draw,speed);
     return;
   }
-  if(gamestart == true){
+  if(gamestart){
     gamestart = false;
+    gamePaused = true;
     stopButton[0].innerText = "ПРОДОЛЖИТЬ";
     clearInterval(gameid);
     return;
