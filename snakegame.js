@@ -21,7 +21,7 @@ let apples = [];
 let max = canvas.width/10;
 let gamestart = false;
 let score = 0;
-let speed = 200;
+let speed = 125;
 let walls = [];
 let snake = [{x: 1, y: 1}];
 let wallsWill;
@@ -54,7 +54,7 @@ $("[data-level]").click(function(){
     maxPoints = maxPointsDublicat;
     wallsWill = 0;
     walls.length = 0;
-    speed = 150;
+    speed = 125;
     if($(this).data("level") > 5 && $(this).data("level") != 0){
       speed = $(this).data("level");
     }
@@ -175,7 +175,7 @@ document.addEventListener("keydown", (e) => {
 
 
 function rand(min, max){
-  let x = Math.random() * (max - min) + min
+  let x = Math.random() * (max - min) + min;
   return Math.trunc(x);
 }
 
