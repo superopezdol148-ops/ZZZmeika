@@ -50,7 +50,7 @@ function wallCreate(a){
 }
 
 $("[data-level]").click(function(){
-  if(!gamestart){
+  if(!gamestart && !gamePaused){
     maxPoints = maxPointsDublicat;
     wallsWill = 0;
     walls.length = 0;
@@ -97,6 +97,8 @@ $("[data-over]").click(function(){
 
 
 $("[data-modal]").click(function(){
+  if(gamestart)
+    return;
   let modalId = $(this).data("modal");
 
   $(`#${modalId}`).addClass("active");
@@ -122,7 +124,7 @@ $("[data-sound").click(function(){
 
 
 $("[data-mode]").click(function(){
-  if(gamestart == true)
+  if(gamestart == true || gamePaused == true)
     return;
 
   apples = [];
